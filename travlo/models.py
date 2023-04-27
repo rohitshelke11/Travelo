@@ -1,10 +1,11 @@
 from django.db import models
-from django_google_maps import fields as map_fields
+import geocoder 
 
+mapbox_access_token = 'pk.eyJ1Ijoic2FoaWxzaGFpa2gxNjM0IiwiYSI6ImNrdXV2eTVvZTFoMnIydmxuaXFia3kxYXcifQ.HALeRa9ddGCfM85eJA8GpA'
 # Create your models here.
-class destination(models.Model):
 
-    destination_id = models.IntegerField(primary_key='destination_id')
+class Destination(models.Model):
+
     name = models.CharField(max_length=100)
     des = models.TextField()
     img = models.ImageField(upload_to='destinations')
@@ -13,27 +14,29 @@ class destination(models.Model):
     long = models.FloatField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-    g = geocoder.mapbox(self.address, key=mapbox_access_token)
-    g = g.latlng  # returns => [lat, long]
-    self.lat = g[0]
-    self.long = g[1]
-    return super(destination, self).save(*args, **kwargs)
+        g = geocoder.mapbox(self.address, key=mapbox_access_token)
+        g = g.latlng  # returns => [lat, long]
+        self.lat = g[0]
+        self.long = g[1]
+        return super(Destination, self).save(*args, **kwargs)
 
-    
-class places(models.Model):
+class Place(models.Model):
 
-    place_id = models.IntegerField(primary_key='place_id')
-    destination_id = models.IntegerField(foregin)
+    destination = models.ForeignKey('Destination', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     des = models.TextField()
-    img = models.ImageField(upload_to='places')
+    img = models.ImageField(upload_to='place')
     address = models.TextField()
     lat = models.FloatField(blank=True, null=True)
     long = models.FloatField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-    g = geocoder.mapbox(self.address, key=mapbox_access_token)
-    g = g.latlng  # returns => [lat, long]
-    self.lat = g[0]
-    self.long = g[1]
-    return super(Address, self).save(*args, **kwargs)
+        g = geocoder.mapbox(self.address, key=mapbox_access_token)
+        g = g.latlng  # returns => [lat, long]
+        self.lat = g[0]
+        self.long = g[1]
+        return super(Place, self).save(*args, **kwargs)
+    
+
+
+    

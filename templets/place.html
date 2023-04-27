@@ -33,13 +33,6 @@
 								<ul class="d-flex flex-row align-items-start justify-content-start">
 									<li class="active"><a href="/">Home</a></li>									
 									<li><a href="contact.html">Contact</a></li>
-									{% if user.is_authenticated %}
-									<li><a href="#">Hello, {{user.first_name}}</li></a></li>
-									<li><a href="accounts/logout">Logout</a></li>
-									{%else%}
-									<li><a href="accounts/register">Register</a></li>
-									<li><a href="accounts/login">Login</a></li>
-									{% endif %}
 								</ul>
 							</nav>
 							
@@ -77,13 +70,6 @@
 			<ul>
 				<li class="active"><a href="/">Home</a></li>									
 				<li><a href="contact.html">Contact</a></li>
-				{% if user.is_authenticated %}
-				<li><a href="#">Hello, {{user.first_name}}</li></a></li>
-				<li><a href="accounts/logout">Logout</a></li>
-				{%else%}
-				<li><a href="accounts/register">Register</a></li>
-				<li><a href="accounts/login">Login</a></li>
-				{% endif %}
 			</ul>
 		</div>
 		<div class="menu_social">
@@ -109,13 +95,13 @@
 				
 				<!-- Slide -->
 				<div class="owl-item">
-					<div class="background_image" style="background-image:url({% static 'images/home.jpg' %})"></div>
+					<div class="background_image" style="background-image:url({{place.img.url}})"></div>
 					<div class="home_slider_content_container">
 						<div class="container">
 							<div class="row">
 								<div class="col">
 									<div class="home_slider_content">
-										<div class="home_title"><h2>Let us take you away</h2></div>
+										<div class="home_title"><h2>Let us take you to {{place.name}}</h2></div>
 									</div>
 								</div>
 							</div>
@@ -125,13 +111,13 @@
 
 				<!-- Slide -->
 				<div class="owl-item">
-					<div class="background_image" style="background-image:url({% static 'images/home.jpg' %})"></div>
+					<div class="background_image" style="background-image:url({{place.img.url}})"></div>
 					<div class="home_slider_content_container">
 						<div class="container">
 							<div class="row">
 								<div class="col">
 									<div class="home_slider_content">
-										<div class="home_title"><h2>Let us take you away</h2></div>
+										<div class="home_title"><h2>Let us take you to {{place.name}}</h2></div>
 									</div>
 								</div>
 							</div>
@@ -141,14 +127,12 @@
 
 				<!-- Slide -->
 				<div class="owl-item">
-					<div class="background_image" style="background-image:url({% static 'images/home.jpg' %})"></div>
+					<div class="background_image" style="background-image:url({{place.img.url}})"></div>
 					<div class="home_slider_content_container">
 						<div class="container">
 							<div class="row">
 								<div class="col">
-									<div class="home_slider_content">
-										<div class="home_title"><h2>Let us take you away</h2></div>
-									</div>
+                                    <div class="home_title"><h2>Let us take you to {{place.name}}</h2></div>
 								</div>
 							</div>
 						</div>
@@ -156,40 +140,9 @@
 				</div>
 
 			</div>
-
-			<!-- <div class="home_page_nav">
-				<ul class="d-flex flex-column align-items-end justify-content-end">
-					<li><a href="#" data-scroll-to="#destinations">Offers<span>01</span></a></li>
-					<li><a href="#" data-scroll-to="#testimonials">Testimonials<span>02</span></a></li>
-					<li><a href="#" data-scroll-to="#news">Latest<span>03</span></a></li>
-				</ul>
-			</div> -->
 		</div>
 	</div>
 
-	<!-- Search -->
-
-	<div class="home_search">
-		<div class="container">
-			<div class="row">
-				<div class="col">
-					<div class="home_search_container">
-						<div class="home_search_title">Search for your trip</div>
-						<div class="home_search_content">
-							<form action="#" class="home_search_form" id="home_search_form">
-								<div class="d-flex flex-lg-row flex-column align-items-start justify-content-lg-between justify-content-start">
-									<input type="text" class="search_input search_input_1" placeholder="Search For Place" required="required">
-									<button class="home_search_button">search</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Intro -->
 
 	<!-- Destinations -->
 
@@ -197,32 +150,9 @@
 		<div class="container">
 			<div class="row">
 				<div class="col text-center">
-					<div class="section_subtitle">simply amazing places</div>
-					<div class="section_title"><h2>Popular Destinations</h2></div>
-				</div>
-			</div>
-			<div class="row destinations_row">
-				<div class="col">
-					<div class="destinations_container item_grid">
-
-						
-					{% for dest in dests %}
-						<!-- Destination -->
-						<div class="destination item">
-							<div class="destination_image">
-								<img src="{{dest.img.url}}" alt="">
-							{% if dest.offer %}	
-							<div class="spec_offer text-center"><a href="#">Special Offer</a></div>
-							{% endif %}
-							</div>
-							<div class="destination_content">
-								<div class="destination_title"><a href="destination/{{dest.id}}">{{dest.name}}</a></div>
-								<div class="destination_subtitle"><p>{{dest.des}}</p></div>
-							</div>
-						</div>
-					{% endfor %}
-
-					</div>
+					<div class="section_subtitle">simply amazing place</div>
+					<div class="section_title"><h2>Information about {{place.name}}</h2></div>
+                    <div class="news_post_title" style=" font-size: 20px ; font-weight: 700; color: black">{{place.des}}</div>
 				</div>
 			</div>
 		</div>
