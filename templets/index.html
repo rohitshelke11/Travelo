@@ -15,6 +15,8 @@
 <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'styles/responsive.css' %}">
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body>
 
@@ -33,13 +35,6 @@
 								<ul class="d-flex flex-row align-items-start justify-content-start">
 									<li class="active"><a href="/">Home</a></li>									
 									<li><a href="contact.html">Contact</a></li>
-									{% if user.is_authenticated %}
-									<li><a href="#">Hello, {{user.first_name}}</li></a></li>
-									<li><a href="accounts/logout">Logout</a></li>
-									{%else%}
-									<li><a href="accounts/register">Register</a></li>
-									<li><a href="accounts/login">Login</a></li>
-									{% endif %}
 								</ul>
 							</nav>
 							
@@ -77,13 +72,6 @@
 			<ul>
 				<li class="active"><a href="/">Home</a></li>									
 				<li><a href="contact.html">Contact</a></li>
-				{% if user.is_authenticated %}
-				<li><a href="#">Hello, {{user.first_name}}</li></a></li>
-				<li><a href="accounts/logout">Logout</a></li>
-				{%else%}
-				<li><a href="accounts/register">Register</a></li>
-				<li><a href="accounts/login">Login</a></li>
-				{% endif %}
 			</ul>
 		</div>
 		<div class="menu_social">

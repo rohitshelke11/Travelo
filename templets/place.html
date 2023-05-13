@@ -149,14 +149,73 @@
 	<div class="destinations" id="destinations">
 		<div class="container">
 			<div class="row">
-				<div class="col text-center">
+				<div class="col-md-6">
 					<div class="section_subtitle">simply amazing place</div>
 					<div class="section_title"><h2>Information about {{place.name}}</h2></div>
                     <div class="news_post_title" style=" font-size: 20px ; font-weight: 700; color: black">{{place.des}}</div>
+					<h5 class="card-title" style="padding: 10px;">Over-All rating of place:
+						<span class="fa fa-star {% if place.average_rating > 0 %} checked {% endif %}"></span>
+						<span class="fa fa-star {% if place.average_rating > 1 %} checked {% endif %}"></span>
+						<span class="fa fa-star {% if place.average_rating > 2 %} checked {% endif %}"></span>
+						<span class="fa fa-star {% if place.average_rating > 3 %} checked {% endif %}" ></span>
+						<span class="fa fa-star {% if place.average_rating > 4 %} checked {% endif %}"></span>
+					</h5>
+				</div>
+				<div class="col-md-6">
+					<div id='map'></div>
+					<script>
+						mapboxgl.accessToken = '{{ mapbox_access_token }}';
+						var map = new mapboxgl.Map({
+							container: 'map', // container ID
+							style: 'mapbox://styles/mapbox/streets-v11', // style URL
+							center: [{{ place.long }}, {{ place.lat }}], // starting position [lng, lat]
+							zoom: 11 // starting zoom
+						});
+						var marker = new mapboxgl.Marker()
+							.setLngLat([{{ place.long }}, {{ place.lat }}])
+							.setPopup(new mapboxgl.Popup().setHTML("<p>{{ place.address }}</p>"))
+							.addTo(map);
+					</script>
 				</div>
 			</div>
 		</div>
 	</div>
+
+
+	<!-- Rating & Avg -->
+
+
+
+
+	<form style="padding: 50px;" action="review" method="POST">
+
+        {%csrf_token%}
+        <input type="text"  class="search_input search_input_1" name="username" placeholder="Your Name" ><br>
+        <input type="text"  class="search_input search_input_1" name="comment" placeholder="Comment on place" ><br>
+		<div style="padding-bottom: 10px;">				
+			<ul class="btn btn-light list-inline rating-list">
+			<li>
+				<i class="fa fa-star {% if place.user_rating > 4 %} checked {% endif %}" title="Rate 5"></i></li>
+			<li>
+				<i class="fa fa-star {% if place.user_rating > 3 %} checked {% endif %}" title="Rate 4"></i></li>
+			<li>
+				<i class="fa fa-star {% if place.user_rating > 2 %} checked {% endif %}" title="Rate 3"></i></li>
+			<li>
+				<i class="fa fa-star {% if place.user_rating > 1 %} checked {% endif %}" title="Rate 2"></i></li>
+			<li>
+				<i class="fa fa-star {% if place.user_rating > 0 %} checked {% endif %}" title="Rate 1"></i></li>
+		  </ul>
+		</div>
+        <button type="submit"  class="home_search_button">Submit</button>
+
+    </form>
+    <div>
+        <h3>
+            {%for message in messages %}
+                {{message}}
+            {%endfor%}
+        </h3>
+    </div>
 
 	<!-- Testimonials -->
 
@@ -166,7 +225,7 @@
 			<div class="row">
 				<div class="col text-center">
 					<div class="section_subtitle">simply amazing places</div>
-					<div class="section_title"><h2>Search Places By Your Interest</h2></div>
+					<div class="section_title"><h2>What other's are saying about place</h2></div>
 				</div>
 			</div>
 			<div class="row testimonials_row">
@@ -177,39 +236,17 @@
 						<div class="owl-carousel owl-theme testimonials_slider">
 							
 							<!-- Slide -->
+							{% for review in review %}
 							<div class="owl-item text-center">
-								<div class="testimonial">“The journey of a thousand miles begins with a single step.” ...</div>
+								<div class="testimonial">“{{ review.des }}” ...</div>
 								<div class="testimonial_author">
 									<div class="testimonial_author_content d-flex flex-row align-items-end justify-content-start">
-										<div></div>
+										<div>{{ review.user_name }}</div>
 										<div></div>
 									</div>
 								</div>
 							</div>
-
-							<!-- Slide -->
-							<div class="owl-item text-center">
-								<div class="testimonial">“Dare to live the life you've always wanted.” ...</div>
-								<div class="testimonial_author">
-									<div class="testimonial_author_content d-flex flex-row align-items-end justify-content-start">
-										<div></div>
-										<div></div>
-									</div>
-								</div>
-							</div>
-
-							<!-- Slide -->
-							<div class="owl-item text-center">
-								<div class="testimonial">“The journey of a thousand miles begins with a single step.” ...
-									 “Dare to live the life you've always wanted.” ...</div>
-								<div class="testimonial_author">
-									<div class="testimonial_author_content d-flex flex-row align-items-end justify-content-start">
-										<div></div>
-										<div></div>
-									</div>
-								</div>
-							</div>
-
+							{% endfor %}
 						</div>
 					</div>
 				</div>

@@ -15,6 +15,9 @@
 <link rel="stylesheet" type="text/css" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'styles/responsive.css' %}">
+
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body>
 
@@ -148,30 +151,58 @@
 
 	<div class="destinations" id="destinations">
 		<div class="container">
-			<div class="row">
-				<div class="col text-center">
-					<div class="section_subtitle">simply amazing places</div>
-					<div class="section_title"><h2>Popular Places in {{dest.name}}</h2></div>
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="news_post_title" style=" font-size: 20px ; font-weight: 700; color: black">{{dest.des}}</div>
+						</div>
+						<div class="col-md-6">
+							<div id='map'></div>
+								<script>
+									mapboxgl.accessToken = '{{ mapbox_access_token }}';
+									var map = new mapboxgl.Map({
+										container: 'map', // container ID
+										style: 'mapbox://styles/mapbox/streets-v11', // style URL
+										center: [{{ dest.long }}, {{ dest.lat }}], // starting position [lng, lat]
+										zoom: 11 // starting zoom
+									});
+									var marker = new mapboxgl.Marker()
+										.setLngLat([{{ dest.long }}, {{ dest.lat }}])
+										.setPopup(new mapboxgl.Popup().setHTML("<p>{{ dest.address }}</p>"))
+										.addTo(map);
+								</script>
+							
+					  </div>
 				</div>
+				
+
+			<div class="col text-center">
+				<div class="section_subtitle">simply amazing places</div>
+				<div class="section_title"><h2>Popular Places in {{dest.name}}</h2></div>
 			</div>
 			<div class="row destinations_row">
 				<div class="col">
 					<div class="destinations_container item_grid">
 
-						
 					{% for place in places %}
 						<!-- Destination -->
 						<div class="destination item">
 							<div class="destination_image">
 								<img src="{{place.img.url}}" alt="">
-							{% if dest.offer %}	
-							<div class="spec_offer text-center"><a href="#">Special Offer</a></div>
-							{% endif %}
 							</div>
 							<div class="destination_content">
 								<div class="destination_title"><a href="place/{{place.id}}">{{place.name}}</a></div>
 								<div class="destination_subtitle"><p>{{place.des}}</p></div>
 							</div>
+
+							<h5 class="card-title" style="padding: 10px;">Over-All rating of place:
+								<span class="fa fa-star {% if place.average_rating > 0 %} checked {% endif %}"></span>
+								<span class="fa fa-star {% if place.average_rating > 1 %} checked {% endif %}"></span>
+								<span class="fa fa-star {% if place.average_rating > 2 %} checked {% endif %}"></span>
+								<span class="fa fa-star {% if place.average_rating > 3 %} checked {% endif %}" ></span>
+								<span class="fa fa-star {% if place.average_rating > 4 %} checked {% endif %}"></span>
+							</h5>
+
 						</div>
 					{% endfor %}
 
@@ -181,63 +212,7 @@
 		</div>
 	</div>
 
-	<!-- Testimonials -->
 
-	<div class="testimonials" id="testimonials">
-		<div class="parallax_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/testimonials.jpg' %}" data-speed="0.8"></div>
-		<div class="container">
-			<div class="row">
-				<div class="col text-center">
-					<div class="section_subtitle">simply amazing places</div>
-					<div class="section_title"><h2>Search Places By Your Interest</h2></div>
-				</div>
-			</div>
-			<div class="row testimonials_row">
-				<div class="col">
-
-					<!-- Testimonials Slider -->
-					<div class="testimonials_slider_container">
-						<div class="owl-carousel owl-theme testimonials_slider">
-							
-							<!-- Slide -->
-							<div class="owl-item text-center">
-								<div class="testimonial">“The journey of a thousand miles begins with a single step.” ...</div>
-								<div class="testimonial_author">
-									<div class="testimonial_author_content d-flex flex-row align-items-end justify-content-start">
-										<div></div>
-										<div></div>
-									</div>
-								</div>
-							</div>
-
-							<!-- Slide -->
-							<div class="owl-item text-center">
-								<div class="testimonial">“Dare to live the life you've always wanted.” ...</div>
-								<div class="testimonial_author">
-									<div class="testimonial_author_content d-flex flex-row align-items-end justify-content-start">
-										<div></div>
-										<div></div>
-									</div>
-								</div>
-							</div>
-
-							<!-- Slide -->
-							<div class="owl-item text-center">
-								<div class="testimonial">“The journey of a thousand miles begins with a single step.” ...
-									 “Dare to live the life you've always wanted.” ...</div>
-								<div class="testimonial_author">
-									<div class="testimonial_author_content d-flex flex-row align-items-end justify-content-start">
-										<div></div>
-										<div></div>
-									</div>
-								</div>
-							</div>
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 		<!-- <div class="test_nav">
 			<ul class="d-flex flex-column align-items-end justify-content-end">
 				<li><a href="#">City Breaks Clients<span>01</span></a></li>
